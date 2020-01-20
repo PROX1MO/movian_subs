@@ -26,7 +26,7 @@ class subs
         $title = preg_replace("/\%u([0-9A-F]{4})/", "&#x\\1;", $title);
         $title = html_entity_decode($title, ENT_NOQUOTES, 'UTF-8');
 
-		$remove_suffixes = array('SD', 'HD', 'FHD', 'UHD', 'TrueHD', 'NF', 'AMZN', 'XviD', 'Pk', 'TS', '2K', '4K', '480p', '576p', '720p', '1080p', '1440p', '2160p', 'Web', 'BluRay', 'BRRip', 'iNTERNAL', 'x264', 'x265', 'AC3', 'DTS', 'Atmos', 'HUD', '\[', '');
+		$remove_suffixes = array('SD', 'HD', 'FHD', 'UHD', 'TrueHD', 'NF', 'AMZN', 'XviD', 'Pk', 'TS', '2K', '4K', '480p', '576p', '720p', '1080p', '1440p', '2160p', 'Web', 'BluRay', 'BRRip', 'iNTERNAL', 'PROPER', 'x264', 'x265', 'AC3', 'DTS', 'Atmos', 'HUD', '\[', '');
 
 		foreach($remove_suffixes as $rs)
 		{
