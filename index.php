@@ -39,7 +39,8 @@ else
 	{
 		$title = $matches[1];
 		$season = $matches[2];
-		$episode = $matches[3];	
+		$episode = $matches[3];
+		$title = trim($title);
 	}
 
 	if (!empty($season) && !empty($episode))
