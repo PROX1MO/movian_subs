@@ -57,7 +57,7 @@ else
 
 		$title = str_replace("'", '', $title);
 		$title = str_replace("\"", '', $title);	
-		if($subs == '[]' && str_word_count($title) > 1)//try to remove the first word
+/*		if($subs == '[]' && str_word_count($title) > 1)//try to remove the first word
 		{
 			$title = urldecode($title);
 			$title = substr(strstr($title," "), 1);
@@ -73,7 +73,7 @@ else
 			}
 
 		}
-
+*/
 	}
 	else
 	{
