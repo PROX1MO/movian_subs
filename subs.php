@@ -30,7 +30,7 @@ class subs
 
 		foreach($remove_suffixes as $rs)
 		{
-			$title = preg_replace('/(.*)$rs.*/i', '$1', $title);
+			$title = preg_replace("/(.*)$rs.*/i", '$1', $title);
 		}
 		$title = preg_replace('/20\d\d/', '', $title);
 		$title = preg_replace('/\s+(?=\s)/', '', $title);
