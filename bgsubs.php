@@ -83,7 +83,7 @@ class bgsubs extends subs
 			if (strstr($link, 'download'))
 			{
 
-				$link = preg_replace('/s=.*&/', '', $link);
+				$link = preg_replace('/s=.*&amp;/', '', $link);
 				$aFilesInArchive = $this->getSubFilesFromArchive($link);
 				foreach($aFilesInArchive as $title)
 				{
