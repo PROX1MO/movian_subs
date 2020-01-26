@@ -45,7 +45,7 @@ else
 
 	if (!empty($season) && !empty($episode))
 	{
-		$series_variants = array("S%02dE%02d", "%02dx%02d", "%02d %02d"); //, "%02d%02d"
+		$series_variants = array("S%02dE%02d", "%02dx%02d"); //, "%02d %02d", "%02d%02d"
 		foreach($series_variants as $format)
 		{
 			$series_suffix = sprintf($format, $season, $episode);
@@ -56,12 +56,12 @@ else
 		}
 
 		$title = str_replace("'", '', $title);
-		$title = str_replace("\"", '', $title);	
+		$title = str_replace("\"", '', $title);
 /*		if($subs == '[]' && str_word_count($title) > 1)//try to remove the first word
 		{
 			$title = urldecode($title);
 			$title = substr(strstr($title," "), 1);
-			$series_variants = array("S%02dE%02d", "%02dx%02d", "%02d %02d"); // "%02d%02d",
+			$series_variants = array("S%02dE%02d", "%02dx%02d"); // , "%02d %02d", "%02d%02d",
 			foreach($series_variants as $format)
 			{
 				$series_suffix = sprintf($format, $season, $episode);
