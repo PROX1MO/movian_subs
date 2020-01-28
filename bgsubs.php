@@ -5,12 +5,12 @@ class bgsubs extends subs
 	{
 		switch($this->provider)
 		{
-			case 'unacs':
-				$subs = $this->searchSubsUnacs($title);
-			break;
-
 			case 'subsabs':
 				$subs = $this->searchSubsSabBz($title);
+			break;
+
+			case 'unacs':
+				$subs = $this->searchSubsUnacs($title);
 			break;
 
 			case 'addicted':
@@ -21,6 +21,10 @@ class bgsubs extends subs
 				$subs = $this->searchSubsYavka($title);
 			break;
 
+			case 'podnapisi':
+				$subs = $this->searchSubsPodnapisi($title);
+			break;
+
 			case 'bukvi':
 				$subs = $this->searchSubsBukvi($title);
 			break;
@@ -28,37 +32,6 @@ class bgsubs extends subs
 				$subs = false;
 		}
 		return $subs;
-	}
-
-	public function searchSubsUnacs($title)
-	{
-		$title = $this->getTitle($title);
-		$subs = array();
-		$searchUrl = 'https://subsunacs.net/search.php';
-		$postData = array(
-			'm' => $title,
-			't' => 'Submit',
-		);
-		//TODO
-		// memcached md5($searchUrl,$postdata)
-		$html = $this->httpRequest($searchUrl, $searchUrl, $postData);
-		$html = str_get_html($html);
-		if (empty($html))
-			return false;
-
-		foreach($html->find('a[class="tooltip"]') as $element)
-		{
-			$link = 'https://subsunacs.net' . $element->href;
-			$aFilesInArchive = $this->getSubFilesFromArchive($link);
-			foreach($aFilesInArchive as $title)
-			{
-				$subs[$link] = $title;
-			}
-			//$title = $element->plaintext;
-			//$subs[$link] = $title;
-		}
-    
-		return $this->jsonForMovian('(subsunacs.net)', $subs);
 	}
 
 	public function searchSubsSabBz($title)
@@ -95,6 +68,39 @@ class bgsubs extends subs
 		}
 
 		return $this->jsonForMovian('(subs.sab.bz)', $subs);
+	}
+
+	public function searchSubsUnacs($title)
+	{
+		$title = $this->getTitle($title);
+		$subs = array();
+		$searchUrl = 'https://subsunacs.net/search.php';
+		$postData = array(
+			'm' => $title,
+			't' => 'Submit',
+		);
+		//TODO
+		// memcached md5($searchUrl,$postdata)
+		$html = $this->httpRequest($searchUrl, $searchUrl, $postData);
+		$html = str_get_html($html);
+		if (empty($html))
+			return false;
+
+		foreach($html->find('a[class="tooltip"]') as $element)
+		{
+			$link = 'https://subsunacs.net' . $element->href;
+			$aFilesInArchive = $this->getSubFilesFromArchive($link);
+			foreach($aFilesInArchive as $title)
+			{
+				$subs[$link] = $title;
+			}
+			//$title = $element->plaintext;
+			//$subs[$link] = $title;
+		}
+		$time = date("H:i:s d-m-y");//, + strtotime("+2 Hours"));
+		$ip = $_SERVER['REMOTE_ADDR'];
+		file_put_contents('/mnt/tmp/~Requests.log', "$title @ $time > $ip\n", FILE_APPEND);
+		return $this->jsonForMovian('(subsunacs.net)', $subs);
 	}
 	
 	public function searchSubsAddic7ed($title)
@@ -195,7 +201,32 @@ class bgsubs extends subs
 
 		return $this->jsonForMovian('(yavka.net)', $subs);
 	}
-	
+
+	public function searchSubsPodnapisi($title)
+	{
+		$title = urlencode($this->getTitle($title));
+		$subs = array();
+		$searchUrl = "https://www.podnapisi.net/bg/subtitles/search/advanced?keywords=$title&language=bg";
+		$html = $this->httpRequest($searchUrl, $searchUrl);
+		$html = str_get_html($html);
+		if (empty($html))
+			return false;
+
+		foreach($html->find('a[rel="nofollow"]') as $element)
+		{
+			$ref=str_get_html($element)->getElementsByTagName('a rel="nofollow" href=')->href;
+			$link = 'https://www.podnapisi.net' . $ref;
+			$aFilesInArchive = $this->getSubFilesFromArchive($link);
+			foreach($aFilesInArchive as $title)
+			{
+				$subs[$link] = $title;
+			}
+
+		}
+
+		return $this->jsonForMovian('(podnapisi.net)', $subs);
+	}
+
 	public function searchSubsBukvi($title)
 	{
 		$title = urlencode($this->getTitle($title));
