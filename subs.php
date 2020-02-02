@@ -32,7 +32,7 @@ class subs
 		{
 			$title = preg_replace("/(.*)$rs.*/i", '$1', $title);
 		}
-		$title = preg_replace('/20\d\d/', '', $title);
+		$title = preg_replace('/(?!^)[12]\d\d\d/', '', $title);	
 		$title = preg_replace('/\s+(?=\s)/', '', $title);
 		$title = trim($title);
 //		DEBUG - result for every provider
