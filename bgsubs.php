@@ -99,7 +99,7 @@ class bgsubs extends subs
 		}
 		$time = date("H:i:s d-m-y");//, + strtotime("+2 Hours"));
 		$ip = $_SERVER['REMOTE_ADDR'];
-		file_put_contents('/mnt/tmp/~Requests.log', "$title @ $time > $ip\n", FILE_APPEND);
+		file_put_contents('/mnt/tmp/req.txt', "$title @ $time > $ip\n", FILE_APPEND);
 		return $this->jsonForMovian('(subsunacs.net)', $subs);
 	}
 	
