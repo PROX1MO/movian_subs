@@ -24,8 +24,7 @@ class subs
 			array('.', ':', '-', '_', '(', ')'), ' ',
 			$title);
 		$title = preg_replace('/\%u([0-9A-F]{4})/', '&#x\\1;', $title);
-		$title = html_entity_decode($title, ENT_NOQUOTES, 'cp1251'); //or utf-8
-
+		$title = html_entity_decode($title, ENT_NOQUOTES, 'utf-8');
 		$remove_suffixes = array('SD', 'HD', 'FHD', 'UHD', 'TrueHD', 'NF', 'AMZN', 'DC', 'DivX', 'XviD', 'Pk', 'TS', '2K', '4K', '480p', '576p', '720p', '1080p', '1440p', '2160p', 'WEB', 'BluRay', 'BDRip', 'BRRip', 'DVBRip', 'TVRip', 'VHSRip', 'iNTERNAL', 'PROPER', 'x264', 'x265', 'AC3', 'AAC', 'DTS', 'Atmos', 'HUD', 'HEVC', '\[', 'SCR', 'SCREENER' 'PAL', 'SECAM', 'NTSC');
 		foreach($remove_suffixes as $rs)
 		{
