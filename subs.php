@@ -35,6 +35,9 @@ class subs
 		$title = preg_replace('/(?!^)[12]\d\d\d/', '', $title);	
 		$title = preg_replace('/\s+(?=\s)/', '', $title);
 		$title = trim($title);
+		if (empty($title)) {
+			break;
+		}
 //		DEBUG - result for every provider
 //		$time = date("H:i:s d-m-y");//, + strtotime("+2 Hours"));
 //		$ip = $_SERVER['REMOTE_ADDR'];
