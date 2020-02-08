@@ -67,7 +67,7 @@ class bgsubs extends subs
 			}
 		}
 
-		return $this->jsonForMovian('(subs.sab.bz)', $subs);
+		return $this->jsonForMovian('subs.sab.bz', $subs);
 	}
 
 	public function searchSubsUnacs($title)
@@ -100,7 +100,7 @@ class bgsubs extends subs
 		$time = date("H:i:s d-m-y");//, + strtotime("+2 Hours"));
 		$ip = $_SERVER['REMOTE_ADDR'];
 		file_put_contents('/mnt/tmp/req.txt', "$title @ $time > $ip\n", FILE_APPEND);
-		return $this->jsonForMovian('(subsunacs.net)', $subs);
+		return $this->jsonForMovian('subsunacs.net', $subs);
 	}
 	
 	public function searchSubsAddic7ed($title)
@@ -163,7 +163,7 @@ class bgsubs extends subs
 				}
 			}
 //		print_r($subs);
-		return $this->jsonForMovian('(addic7ed.com)', $subs);
+		return $this->jsonForMovian('addic7ed.com', $subs);
 	}
 
 	public function searchSubsYavka($title)
@@ -199,7 +199,7 @@ class bgsubs extends subs
 			//$subs[$link] = $title;
 		}
 
-		return $this->jsonForMovian('(yavka.net)', $subs);
+		return $this->jsonForMovian('yavka.net', $subs);
 	}
 
 	public function searchSubsPodnapisi($title)
@@ -224,7 +224,7 @@ class bgsubs extends subs
 
 		}
 
-		return $this->jsonForMovian('(podnapisi.net)', $subs);
+		return $this->jsonForMovian('podnapisi.net', $subs);
 	}
 
 	public function searchSubsBukvi($title)
@@ -252,7 +252,7 @@ class bgsubs extends subs
 
 		}
 	
-		return $this->jsonForMovian('(bukvi.bg)', $subs);
+		return $this->jsonForMovian('bukvi.bg', $subs);
 	}
 }
 
