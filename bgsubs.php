@@ -172,7 +172,6 @@ class bgsubs extends subs
 		$title = urlencode($this->getTitle($title));
 		$subs = array();
 		$searchUrl = "http://yavka.net/subtitles.php?l=BG&y=&u=&s=$title";
-
 		$html = $this->httpRequest($searchUrl, $searchUrl);
 		$html = str_get_html($html);
 		if (empty($html))
