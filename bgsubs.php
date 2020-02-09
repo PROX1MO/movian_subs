@@ -115,7 +115,7 @@ class bgsubs extends subs
 			return false;
 
 		foreach($html->find('a') as $movieLink) {
-			if (! preg_match('/movie\/[0-9]*$/', $movieLink->href)) {
+			if (! preg_match('/movie\/\d+$/', $movieLink->href)) {
 				continue;
 			}
 
@@ -178,20 +178,20 @@ class bgsubs extends subs
 		if (empty($html))
 			return false;
 
-		foreach($html->find('div[class="middle_content"] a') as $element)
+		foreach($html->find('span[class="featured_article"] a') as $element)
 		{
-			if (! preg_match('/\/subs\/[0-9]*\/.*/', $element->href)) {
+			if (! preg_match('/\/subs\/\d+\/BG/', $element->href)) {
 				continue;
 			}
 			$link = 'http://yavka.net' . rtrim($element->href, '/') . '/';
 
 			$parts = explode('/', $link);
-			$post_data = array(
+			$postData = array(
 				'id' => $parts[count($parts, COUNT_NORMAL) - 2],
-				'lng' => $parts[count($parts, COUNT_NORMAL) - 1],
+				'lng' => 'BG', //$parts[count($parts, COUNT_NORMAL) - 1],
 			);
 
-			$aFilesInArchive = $this->getSubFilesFromArchive($link, $post_data);
+			$aFilesInArchive = $this->getSubFilesFromArchive($link, $postData);
 			foreach($aFilesInArchive as $title)
 			{
 				$subs[$link] = $title;
