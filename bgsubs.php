@@ -110,7 +110,7 @@ class bgsubs extends subs
 		$subs = array();
 		$searchUrl = "http://www.addic7ed.com/srch.php?search=$title&Submit=Search";
 		$html = $this->httpRequest($searchUrl, $searchUrl);
-		$html=str_get_html($html);
+		$html = str_get_html($html);
 		if (empty($html))
 			return false;
 
