@@ -215,7 +215,7 @@ class bgsubs extends subs
 
 		foreach($html->find('a[rel="nofollow"]') as $element)
 		{
-			$ref=str_get_html($element)->getElementsByTagName('a rel="nofollow" href=')->href;
+			$ref = str_get_html($element)->getElementsByTagName('a rel="nofollow" href=')->href;
 			$link = 'https://www.podnapisi.net' . $ref;
 			$aFilesInArchive = $this->getSubFilesFromArchive($link);
 			foreach($aFilesInArchive as $title)
@@ -240,7 +240,7 @@ class bgsubs extends subs
 
 		foreach($html->find('div[class="tooltip"]') as $element)
 		{
-			$ref=str_get_html($element)->getElementsByTagName('a')->href;
+			$ref = str_get_html($element)->getElementsByTagName('a')->href;
 			if (! preg_match('/\/load\/[0-9]{4}$/', $ref)) {
 				continue;
 			}
