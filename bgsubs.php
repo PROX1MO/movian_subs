@@ -25,7 +25,7 @@ class bgsubs extends subs
 				$subs = $this->searchSubsPodnapisi($title);
 			break;
 
-			case 'bukvi':
+			case 'bukvi'://не се ползва търсачката им не струва и няма съдържание само 2700 субс
 				$subs = $this->searchSubsBukvi($title);
 			break;
 
