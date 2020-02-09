@@ -24,7 +24,7 @@ class subs
 			array('.', ':', '-', '_', '(', ')'), ' ',
 			$title);
 		$title = preg_replace('/\%u([0-9A-F]{4})/', '&#x\\1;', $title);
-		$title = html_entity_decode($title, ENT_NOQUOTES, 'utf8');
+		$title = html_entity_decode($title, ENT_NOQUOTES, 'utf-8');
 		$remove_suffixes = array('SD', 'HD', 'FHD', 'UHD', 'TrueHD', 'NF', 'AMZN', 'DC', 'DivX', 'XviD', 'Pk', 'TS', '2K', '4K', '480p', '576p', '720p', '1080p', '1440p', '2160p', 'WEB', 'BluRay', 'BDRip', 'BRRip', 'DVBRip', 'TVRip', 'VHSRip', 'iNTERNAL', 'PROPER', 'x264', 'x265', 'AC3', 'AAC', 'DTS', 'Atmos', 'HUD', 'HEVC', '\[', 'SCR', 'SCREENER' 'PAL', 'SECAM', 'NTSC');
 		foreach($remove_suffixes as $rs)
 		{
@@ -36,7 +36,7 @@ class subs
 		$title = preg_replace('/\s+(?=\s)/', '', $title);
 		$title = trim($title);
 		if (empty($title)) {
-			break;
+			die;
 		}
 //		DEBUG - result for every provider
 //		$time = date("H:i:s d-m-y");//, + strtotime("+2 Hours"));
@@ -194,7 +194,7 @@ class subs
 					$fp = $rar->getStream();
 					$subs = fread($fp ,1024*1024);
 					fclose($fp);
-					$this->subs = iconv('cp1251', 'utf8', $subs);
+					$this->subs = iconv('cp1251', 'utf-8', $subs);
 					return true;
 				}
 			}
@@ -218,7 +218,7 @@ class subs
 					$aSubFiles[] = $filename;
 					if (!empty($sub_filename) && strstr($filename, $sub_filename))
 					{
-						$this->subs = iconv('cp1251', 'utf8', $zip->getFromName($filename));
+						$this->subs = iconv('cp1251', 'utf-8', $zip->getFromName($filename));
 						return true;
 					}
 				}
