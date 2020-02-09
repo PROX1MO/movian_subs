@@ -28,6 +28,7 @@ class bgsubs extends subs
 			case 'bukvi':
 				$subs = $this->searchSubsBukvi($title);
 			break;
+
 			default:
 				$subs = false;
 		}
