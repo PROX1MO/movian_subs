@@ -50,7 +50,7 @@ class bgsubs extends subs
 		if (empty($html))
 			return false;
 
-		foreach($html->find('a') as $element)
+		foreach($html->find('td[class="c2field"] a') as $element)
 		{
 			$link = $element->href;
 			$title = $element->plaintext;
@@ -98,9 +98,7 @@ class bgsubs extends subs
 			//$title = $element->plaintext;
 			//$subs[$link] = $title;
 		}
-		$time = date("H:i:s d-m-y");//, + strtotime("+2 Hours"));
-		$ip = $_SERVER['REMOTE_ADDR'];
-		file_put_contents('/mnt/tmp/req.txt', "$title @ $time > $ip\n", FILE_APPEND);
+
 		return $this->jsonForMovian('subsunacs.net', $subs);
 	}
 	
@@ -114,17 +112,17 @@ class bgsubs extends subs
 		if (empty($html))
 			return false;
 
-		foreach($html->find('a') as $movieLink) {
-			if (! preg_match('/movie\/\d+$/', $movieLink->href)) {
+		foreach($html->find('a') as $movieLink)
+		{
+			if (! preg_match('/movie\/\d+$/', $movieLink->href))
 				continue;
-			}
 
 			$movieUrl = 'http://www.addic7ed.com/' . $movieLink->href;
 			$html = $this->httpRequest($movieUrl, $movieUrl);
 			$html = str_get_html($html);
 			if (empty($html))
 				continue;
-			}
+		}
 
 			$title_prefix = @$html->find('span[class=titulo]', 0)->plaintext;
 			$title_prefix = str_replace('- Switch Subtitle', '', $title);
@@ -134,9 +132,8 @@ class bgsubs extends subs
 				$title_version = @$element->find("td[class=NewsTitle]", 0)->plaintext;
 				$title_version = preg_replace('/Version (.*),.*/', '${1}', $title_version);
 				if (empty($title_version))
-				{
 					continue;
-				}
+
 				$title = "${title_prefix}-${title_version}";
 				$trs = $element->find("tr");
 				foreach($trs as $tr)
@@ -145,15 +142,15 @@ class bgsubs extends subs
 					$link = "https://www.addic7ed.com";
 					$downloadButton = @$tr->find("a[class=buttonDownload]", 0);
 					$completed = @$tr->find("td[width=\"19%\"]", 0)->plaintext;
-					if(! $downloadButton) {
+					if(! $downloadButton)
 						continue;
-					}
+
 					$link .= $downloadButton->href;
 					$completed = @$tr->find("td[width=\"19%\"]", 0)->plaintext;
 
-					if (strstr($completed, '%'))
+					if (strstr($completed, '%'))	
 						continue;
-
+					
 					switch($lang)
 					{
 						case 'Bulgarian':
@@ -177,26 +174,26 @@ class bgsubs extends subs
 		if (empty($html))
 			return false;
 
-		foreach($html->find('span[class="featured_article"] a') as $element)
+		foreach($html->find('tr[class="info"] a') as $element)
 		{
-			if (! preg_match('/\/subs\/\d+\/BG/', $element->href)) {
-				continue;
+			if (preg_match('/\/subs\/\d+\/BG/', $element->href))
+			{
+				
+				$link = 'http://yavka.net' . rtrim($element->href, '/') . '/';
+
+				$parts = explode('/', $link);
+				$postData = array(
+					'id' => $parts[count($parts, COUNT_NORMAL) - 2],
+					'lng' => 'BG', //$parts[count($parts, COUNT_NORMAL) - 1],
+				);
 			}
-			$link = 'http://yavka.net' . rtrim($element->href, '/') . '/';
-
-			$parts = explode('/', $link);
-			$postData = array(
-				'id' => $parts[count($parts, COUNT_NORMAL) - 2],
-				'lng' => 'BG', //$parts[count($parts, COUNT_NORMAL) - 1],
-			);
-
+			
 			$aFilesInArchive = $this->getSubFilesFromArchive($link, $postData);
 			foreach($aFilesInArchive as $title)
 			{
 				$subs[$link] = $title;
 			}
-			//$title = $element->plaintext;
-			//$subs[$link] = $title;
+
 		}
 
 		return $this->jsonForMovian('yavka.net', $subs);
@@ -225,9 +222,9 @@ class bgsubs extends subs
 		}
 
 		return $this->jsonForMovian('podnapisi.net', $subs);
-	}
+	}	
 
-	public function searchSubsBukvi($title)
+	public function searchSubsBukvi($title) //търсачката е отвратителна и има само 2700 субс
 	{
 		$title = urlencode($this->getTitle($title));
 		$subs = array();
@@ -239,10 +236,10 @@ class bgsubs extends subs
 
 		foreach($html->find('div[class="tooltip"]') as $element)
 		{
-			$ref = str_get_html($element)->getElementsByTagName('a')->href;
-			if (! preg_match('/\/load\/[0-9]{4}$/', $ref)) {
+			$ref = str_get_html($element)->getElementsByTagName('ah')->href;
+			if (! preg_match('/\/load\/[0-9]{4}$/', $ref))
 				continue;
-			}
+
 			$link = 'http://bukvi.mmcenter.bg' . preg_replace('/(.*)\/(.*)/', '$1/0-0-0-$2-20', $ref);
 			$aFilesInArchive = $this->getSubFilesFromArchive($link);
 			foreach($aFilesInArchive as $title)
@@ -252,8 +249,9 @@ class bgsubs extends subs
 
 		}
 	
-		return $this->jsonForMovian('bukvi.bg', $subs);
+		return $this->jsonForMovian('TEST', $subs);
 	}
+
 }
 
 ?>
