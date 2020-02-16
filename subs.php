@@ -25,23 +25,30 @@ class subs
 			$title);
 		$title = preg_replace('/\%u([0-9A-F]{4})/', '&#x\\1;', $title);
 		$title = html_entity_decode($title, ENT_NOQUOTES, 'utf-8');
-		$remove_suffixes = array('SD', 'HD', 'FHD', 'UHD', 'TrueHD', 'NF', 'AMZN', 'DC', 'DivX', 'XviD', 'Pk', 'TS', '2K', '4K', '480p', '576p', '720p', '1080p', '1440p', '2160p', 'WEB', 'BluRay', 'BDRip', 'BRRip', 'DVBRip', 'TVRip', 'VHSRip', 'iNTERNAL', 'PROPER', 'x264', 'x265', 'AC3', 'AAC', 'DTS', 'Atmos', 'HUD', 'HEVC', '\[', 'SCR', 'SCREENER' 'PAL', 'SECAM', 'NTSC');
+		$remove_suffixes = array(' \d{3,4}[pi]', ' SD', 'TrueHD', '[FU]HD', ' HU?D', ' [xh]26[45]', ' [24]k', ' NF ', 'AMZN', ' DC ', 'DVD', 'DivX', 'XviD', 'Pk ', ' TS ', 'WEB ', 'BluRay', 'BDRip', 'BRRip', 'DVBRip', 'TVRip', 'VHSRip', 'iNTERNAL', 'PROPER', 'PEPACK', 'AC3', 'AAC', 'DTS', 'Atmos', 'HEVC', 'SCREENER', 'SCR ', ' PAL ', 'SECAM', 'NTSC', '\[', '');
 		foreach($remove_suffixes as $rs)
 		{
 			$title = preg_replace("/(.*)$rs.*/i", '$1', $title);
 		}
-		$title = preg_replace('/(?!^)[12]\d{3} /', '', $title);	
+//		$title = preg_replace('/(?!^)[12]\d{3}/', '', $title); old
+		$title = preg_replace('/(.*)?([12]\d{3})\s*$/', '$1', $title);
 		$title = preg_replace('/^episode \d+ (.*)$/i', '$1', $title);
 		$title = preg_replace('/((\d+)[ex](\d+))(.*)$/i', '$1', $title);
-		$title = preg_replace('/\s+(?=\s)/', '', $title);
+		$title = preg_replace('/\s+ii\s+/i', ' 2 ', $title);
+		$title = preg_replace('/\s+iii\s+/i', ' 3 ', $title);
+		$title = preg_replace('/\s+iv\s+/i', ' 4 ', $title);
+		$title = preg_replace('/\s+vi\s+/i', ' 6 ', $title);
+		$title = preg_replace('/\s+vii\s+/i', ' 7 ', $title);
+		$title = preg_replace('/\s+viii\s+/i', ' 8 ', $title);
+		$title = preg_replace('/\s+ix\s+/i', ' 9 ', $title);
+		$title = preg_replace('/\s+x\s+/i', ' 10 ', $title);
+		$title = preg_replace('/(Narcos)\s+?(Mexico)/i', 'Narcos', $title);
+
+		$title = preg_replace('/\s+(?=\s)/', '$1', $title);
 		$title = trim($title);
-		if (empty($title)) {
-			die;
-		}
-//		DEBUG - result for every provider
-//		$time = date("H:i:s d-m-y");//, + strtotime("+2 Hours"));
-//		$ip = $_SERVER['REMOTE_ADDR'];
-//		file_put_contents('/path/~Requests.log', "$title @ $time > $ip\n", FILE_APPEND);
+		if (empty($title))
+			die;		
+//		echo ($title);
 		return $title;
 	}
 
@@ -55,13 +62,12 @@ class subs
 			$title = urlencode($title);
 			$downloadUrl = urlencode($downloadUrl);
 			$allSubs[] = array(
-				"path" => "http://path_to_url/?loadSubs=$downloadUrl&file=$title", //important to set
+				"path" => "http://path_to_api/?loadSubs=$downloadUrl&file=$title",
 				"file" => $title,
 				"type" => 'srt',
 				"site" => $site,
 			);
 		}
-		//file_put_contents("/path/json_encoded.txt", json_encode($allSubs) . "\n", FILE_APPEND);
 		return json_encode($allSubs);
 
 	}
@@ -101,7 +107,6 @@ class subs
 			curl_setopt($ch,CURLOPT_POSTFIELDS, $data);
 		}
 
-		//file_put_contents("/path/cache_debug.log", "$url.$referer.$content\n", FILE_APPEND);
 		$cache_file = $this->cache_dir . "/" . md5($url.$referer.$content);
 		//is cached
 		if (false && file_exists($cache_file) && filesize($cache_file) > 10)
@@ -134,6 +139,9 @@ class subs
 		
 			case 'Ra':
 				return 'rar';
+
+			case '7z':
+				return '7z';
 				break;
 			default:
 				return 'unknown';
@@ -147,10 +155,8 @@ class subs
 			$referer = $url;
 
 		$result = $this->httpRequest($url, $referer, $data);
-		//print($result);
-		//file_put_contents("/path/result", $result);
 
-		$this->tmpfile = tempnam("/tmp", "phpsub-");
+		$this->tmpfile = tempnam("/mnt/tmp/subs", "phpsub-");
 		file_put_contents($this->tmpfile, $result);
 
 		switch($this->archiveType($result))
@@ -162,17 +168,51 @@ class subs
 			case 'rar':
 				$subs = $this->rarExtract($filename);
 				break;
+
+			case '7z':
+//				$subs = $this->SevenZipArchive($filename); not working
+				break;
 			default:
 				$subs = true;
 				$this->subs = $result;
 		}
 
 		// extract subtitles
-		//unlink($this->tmpfile);
+		unlink($this->tmpfile);
 		return $subs;
 	}
 
 	//if sub_filename is empty - returns a list of sub files, else return sub_filename contents
+	protected function SevenZipArchive($sub_filename='')
+	{
+		$aSubFiles = array();
+//		$archive = new SevenZipArchive($cache_file, array('debug' => true));
+		$archive->extractTo($this->tmpfile);
+//		if ($archive->count() === 0)
+//		{
+//			return false;
+//		}
+
+		$archive->getEntries();
+		foreach($archive as $z7z)
+		{
+			$filename = $z7z->getName();
+			if (strstr($filename, '.srt') || strstr($filename, '.sub'))
+			{
+				$aSubFiles[] = substr_replace($filename ,"", -4);//remove file extensions, last 4 chars
+				if (!empty($sub_filename) && strstr($filename, $sub_filename))
+				{
+					$fp = $z7z->getStream();
+					$subs = fread($fp ,1024*1024);
+					fclose($fp);
+					$this->subs = iconv('cp1251', 'utf-8', $subs);
+					return true;
+				}
+			}
+		}
+		return $aSubFiles;
+	}
+
 	protected function rarExtract($sub_filename='')
 	{
 		$aSubFiles = array();
