@@ -138,10 +138,11 @@ class subs
 		
 			case 'Ra':
 				return 'rar';
-
-			case '7z':
-				return '7z';
 				break;
+
+//			case '7z':
+//				return '7z';
+//				break;
 			default:
 				return 'unknown';
 		}
