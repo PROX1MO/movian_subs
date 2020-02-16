@@ -30,9 +30,8 @@ class subs
 		{
 			$title = preg_replace("/(.*)$rs.*/i", '$1', $title);
 		}
-//		$title = preg_replace('/(?!^)[12]\d{3}/', '', $title); old
 		$title = preg_replace('/(.*)?([12]\d{3})\s*$/', '$1', $title);
-		$title = preg_replace('/^episode \d+ (.*)$/i', '$1', $title);
+		$title = preg_replace('/^episode\s+\d+\s+(.*)$/i', '$1', $title);
 		$title = preg_replace('/((\d+)[ex](\d+))(.*)$/i', '$1', $title);
 		$title = preg_replace('/\s+ii\s+/i', ' 2 ', $title);
 		$title = preg_replace('/\s+iii\s+/i', ' 3 ', $title);
@@ -42,7 +41,7 @@ class subs
 		$title = preg_replace('/\s+viii\s+/i', ' 8 ', $title);
 		$title = preg_replace('/\s+ix\s+/i', ' 9 ', $title);
 		$title = preg_replace('/\s+x\s+/i', ' 10 ', $title);
-		$title = preg_replace('/(Narcos)\s+?(Mexico)/i', 'Narcos', $title);
+		$title = preg_replace('/(Narcos)\s+?(Mexico)/i', '$1', $title);
 
 		$title = preg_replace('/\s+(?=\s)/', '$1', $title);
 		$title = trim($title);
