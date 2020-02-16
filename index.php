@@ -5,9 +5,9 @@ include 'bgsubs.php';
 
 $bgsubs = new bgsubs;
 
-if (!isset($_SERVER['HTTP_USER_AGENT']) || ! preg_match('/Movian.*\d\.\d\.\d/', $_SERVER['HTTP_USER_AGENT']))
-	die;
-
+if (!isset($_SERVER['HTTP_USER_AGENT']) || ! preg_match('/Movian.*\d\.\d\.\d/', $_SERVER['HTTP_USER_AGENT'])) {
+		die('<html><head><title>404 Not Found</title></head><body bgcolor="white"><center><h1>404 Not Found</h1></center><hr><center>nginx/1.6.2</center></body></html>');
+}
 
 if (!empty($_GET['loadSubs']) && !empty($_GET['file']))
 {
@@ -28,19 +28,16 @@ else
 	$episode = isset($_POST['e']) ? $_POST['e'] : '';
 
 	if(empty($provider))
-		die("Error 403\n");
+		die('Error 403\n');
 
 	$bgsubs->setProvider($provider);
-	//echo $title;
-	//file_put_contents("/path/debug.log", "$provider -> $title -> $season -> $episonde\n", FILE_APPEND);
-	//is series?
-	if (preg_match('/(.*) .??(\d+).?(\d+)/', $title, $matches))
-//	if (preg_match('/(.*).?S(\d+)E(\d+)/', $title, $matches))
+
+	$title = urldecode($title);
+	if (preg_match('/(.*) .??(\d+)[ex](\d+)/i', $title, $matches))
 	{
 		$title = $matches[1];
 		$season = $matches[2];
 		$episode = $matches[3];
-		$title = trim($title);
 	}
 
 	if (!empty($season) && !empty($episode))
@@ -49,7 +46,7 @@ else
 		foreach($series_variants as $format)
 		{
 			$series_suffix = sprintf($format, $season, $episode);
-//			$subs = $bgsubs->searchSubs("$title $series_suffix");
+//			$subs = $bgsubs->searchSubs("$title $series_suffix"); old
 			$subs = $bgsubs->searchSubs($title.' '.$series_suffix);
 			if($subs != '[]')
 				break;
@@ -57,11 +54,13 @@ else
 
 		$title = str_replace("'", '', $title);
 		$title = str_replace("\"", '', $title);
-/*		if($subs == '[]' && str_word_count($title) > 1)//try to remove the first word
+/*
+		if($subs == '[]' && (preg_match('/(^the) (.*)$/i', $title) //test
+		if($subs == '[]' && str_word_count($title) > 1)//try to remove the first word //better with (^the)/i
 		{
 			$title = urldecode($title);
 			$title = substr(strstr($title," "), 1);
-			$series_variants = array("S%02dE%02d", "%02dx%02d"); // , "%02d %02d", "%02d%02d",
+			$series_variants = array("S%02dE%02d", "%02dx%02d"); //, "%02d %02d", "%02d%02d",
 			foreach($series_variants as $format)
 			{
 				$series_suffix = sprintf($format, $season, $episode);
@@ -82,9 +81,5 @@ else
 	}
 
 	echo $subs;
-
-	//DEBUG
-	//file_put_contents('/path/requests.log', "$plugin,$provider,$title,$season,$episode\n", FILE_APPEND);
-	//file_put_contents('/path/response.log', print_r(json_decode($subs), TRUE), FILE_APPEND);
 }
 ?>
