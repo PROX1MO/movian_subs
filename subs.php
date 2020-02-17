@@ -170,7 +170,7 @@ class subs
 				break;
 
 			case '7z':
-//				$subs = $this->SevenZipArchive($filename); not working
+				$subs = $this->SevenZipArchive($filename);
 				break;
 			default:
 				$subs = true;
@@ -186,30 +186,29 @@ class subs
 	protected function SevenZipArchive($sub_filename='')
 	{
 		$aSubFiles = array();
-//		$archive = new SevenZipArchive($cache_file, array('debug' => true));
-		$archive->extractTo($this->tmpfile);
-//		if ($archive->count() === 0)
-//		{
-//			return false;
-//		}
-
-		$archive->getEntries();
-		foreach($archive as $z7z)
+		$archive = new SevenZipArchive($this->tmpfile);
+		foreach ($archive as $entry)
 		{
-			$filename = $z7z->getName();
+			$filename = $entry['Name'];
 			if (strstr($filename, '.srt') || strstr($filename, '.sub'))
 			{
-				$aSubFiles[] = substr_replace($filename ,"", -4);//remove file extensions, last 4 chars
-				if (!empty($sub_filename) && strstr($filename, $sub_filename))
+				$aSubFiles[] = substr_replace($filename, "", -4);//remove file extensions, last 4 chars
+				$file=$archive->extractTo('/mnt/tmp/subs', $filename);
+								
+				if (!empty($sub_filename) && strstr($file, $sub_filename))
 				{
-					$fp = $z7z->getStream();
-					$subs = fread($fp ,1024*1024);
+					$fp = fopen($file, 'r');
+					$subs = fread($fp, 1024*1024);
 					fclose($fp);
+
 					$this->subs = iconv('cp1251', 'utf-8', $subs);
 					return true;
 				}
+				
 			}
+		
 		}
+		
 		return $aSubFiles;
 	}
 
@@ -228,11 +227,11 @@ class subs
 			$filename = $rar->getName();
 			if (strstr($filename, '.srt') || strstr($filename, '.sub'))
 			{
-				$aSubFiles[] = substr_replace($filename ,"", -4);//remove file extensions, last 4 chars
+				$aSubFiles[] = substr_replace($filename, "", -4);//remove file extensions, last 4 chars
 				if (!empty($sub_filename) && strstr($filename, $sub_filename))
 				{
 					$fp = $rar->getStream();
-					$subs = fread($fp ,1024*1024);
+					$subs = fread($fp, 1024*1024);
 					fclose($fp);
 					$this->subs = iconv('cp1251', 'utf-8', $subs);
 					return true;
