@@ -25,8 +25,8 @@ class bgsubs extends subs
 				$subs = $this->searchSubsPodnapisi($title);
 			break;
 
-			case 'bukvi'://не се ползва търсачката им не струва и няма съдържание само 2700 субс
-				$subs = $this->searchSubsBukvi($title);
+			case 'subsland':
+				$subs = $this->searchSubsSubsland($title);
 			break;
 
 			default:
@@ -224,7 +224,35 @@ class bgsubs extends subs
 		return $this->jsonForMovian('podnapisi.net', $subs);
 	}	
 
-	public function searchSubsBukvi($title) //търсачката е отвратителна и има само 2700 субс
+	public function searchSubsSubsland($title)
+	{
+		$title = urlencode($this->getTitle($title));
+		$subs = array();
+		$searchUrl = "https://subsland.com/index.php?w=name&category=1&s=$title";
+		$html = $this->httpRequest($searchUrl, $searchUrl);
+		$html = str_get_html($html);
+		if (empty($html))
+			return false;
+
+		foreach($html->find('td[align="center"]') as $element)
+		{
+			$ref = str_get_html($element)->getElementsByTagName('a')->href;
+			if (! preg_match('/downloadsubtitles/', $ref))
+				continue;
+
+			$link = $ref;
+			$aFilesInArchive = $this->getSubFilesFromArchive($link);
+			foreach($aFilesInArchive as $title)
+			{
+				$subs[$link] = $title;
+			}
+
+		}
+	
+		return $this->jsonForMovian('subsland.com', $subs);
+	}
+	
+/*	public function searchSubsBukvi($title) //търсачката е отвратителна и има само 2700 субс
 	{
 		$title = urlencode($this->getTitle($title));
 		$subs = array();
@@ -251,7 +279,7 @@ class bgsubs extends subs
 	
 		return $this->jsonForMovian('TEST', $subs);
 	}
-
+*/
 }
 
 ?>
