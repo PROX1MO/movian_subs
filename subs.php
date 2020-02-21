@@ -156,7 +156,7 @@ class subs
 
 		$result = $this->httpRequest($url, $referer, $data);
 
-		$this->tmpfile = tempnam("/mnt/tmp/subs", "phpsub-");
+		$this->tmpfile = tempnam('/mnt/tmp/subs', 'phpsub-');
 		file_put_contents($this->tmpfile, $result);
 
 		switch($this->archiveType($result))
@@ -192,9 +192,9 @@ class subs
 			$filename = $entry['Name'];
 			if ((strstr($filename, '.srt') || strstr($filename, '.sub')) && $entry['Size'] < 200*1024)
 			{
-				$aSubFiles[] = substr_replace($filename, "", -4);//remove file extensions, last 4 chars
+				$aSubFiles[] = substr_replace($filename, '', -4);//remove file extensions, last 4 chars
 				$file = $archive->extractTo('/mnt/tmp/subs', $filename);
-					$fp = fopen("/mnt/tmp/subs/" . $filename, 'r');
+					$fp = fopen('/mnt/tmp/subs/' . $filename, 'r');
 					$subs = fread($fp, 1024*1024);
 					fclose($fp);
 					$this->subs = iconv('cp1251', 'utf-8', $subs);
@@ -220,7 +220,7 @@ class subs
 			$filename = $rar->getName();
 			if ((strstr($filename, '.srt') || strstr($filename, '.sub')) && $rar->getUnpackedSize() < 200*1024)
 			{
-				$aSubFiles[] = substr_replace($filename, "", -4);//remove file extensions, last 4 chars
+				$aSubFiles[] = substr_replace($filename, '', -4);//remove file extensions, last 4 chars
 				if (!empty($sub_filename) && strstr($filename, $sub_filename))
 				{
 					$fp = $rar->getStream();
