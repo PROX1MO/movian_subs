@@ -129,7 +129,7 @@ class subs
 	protected function archiveType($data)
 	{
 		$firstBytes = substr($data, 0, 2);
-		//zip or rar?
+		//zip, rar or 7z?
 		switch($firstBytes)
 		{
 			case "PK":
