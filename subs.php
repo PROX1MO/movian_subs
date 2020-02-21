@@ -190,7 +190,7 @@ class subs
 		foreach ($archive->entries() as $entry)
 		{
 			$filename = $entry['Name'];
-			if ((strstr($filename, '.srt') || strstr($filename, '.sub')) && $entry['Size'] < 250*1024)
+			if ((strstr($filename, '.srt') || strstr($filename, '.sub')) && $entry['Size'] < 200*1024)
 			{
 				$aSubFiles[] = substr_replace($filename, "", -4);//remove file extensions, last 4 chars
 				$file = $archive->extractTo('/mnt/tmp/subs', $filename);
