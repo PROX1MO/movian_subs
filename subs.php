@@ -140,9 +140,9 @@ class subs
 				return 'rar';
 				break;
 
-//			case '7z':
-//				return '7z';
-//				break;
+			case '7z':
+				return '7z';
+				break;
 			default:
 				return 'unknown';
 		}
@@ -187,28 +187,21 @@ class subs
 	{
 		$aSubFiles = array();
 		$archive = new SevenZipArchive($this->tmpfile);
-		foreach ($archive as $entry)
+		foreach ($archive->entries() as $entry)
 		{
 			$filename = $entry['Name'];
-			if (strstr($filename, '.srt') || strstr($filename, '.sub'))
+			if ((strstr($filename, '.srt') || strstr($filename, '.sub')) && $entry['Size'] < 250*1024)
 			{
 				$aSubFiles[] = substr_replace($filename, "", -4);//remove file extensions, last 4 chars
-				$file=$archive->extractTo('/mnt/tmp/subs', $filename);
-								
-				if (!empty($sub_filename) && strstr($file, $sub_filename))
-				{
-					$fp = fopen($file, 'r');
+				$file = $archive->extractTo('/mnt/tmp/subs', $filename);
+					$fp = fopen("/mnt/tmp/subs/" . $filename, 'r');
 					$subs = fread($fp, 1024*1024);
 					fclose($fp);
-
 					$this->subs = iconv('cp1251', 'utf-8', $subs);
-					return true;
-				}
-				
+					unlink ('/mnt/tmp/subs/' . $filename);
 			}
-		
 		}
-		
+
 		return $aSubFiles;
 	}
 
