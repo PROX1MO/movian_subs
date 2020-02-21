@@ -218,7 +218,7 @@ class subs
 		foreach($list as $rar)
 		{
 			$filename = $rar->getName();
-			if (strstr($filename, '.srt') || strstr($filename, '.sub'))
+			if ((strstr($filename, '.srt') || strstr($filename, '.sub')) && $rar->getUnpackedSize() < 200*1024)
 			{
 				$aSubFiles[] = substr_replace($filename, "", -4);//remove file extensions, last 4 chars
 				if (!empty($sub_filename) && strstr($filename, $sub_filename))
@@ -245,7 +245,7 @@ class subs
 				$stat = $zip->statIndex($i);
 				$filename = $stat['name'];
 
-				if (strstr($filename, '.srt') || strstr($filename, '.sub'))
+				if ((strstr($filename, '.srt') || strstr($filename, '.sub')) && $stat['size'] < 200*1024)
 				{
 					$aSubFiles[] = $filename;
 					if (!empty($sub_filename) && strstr($filename, $sub_filename))
