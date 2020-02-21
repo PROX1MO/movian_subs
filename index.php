@@ -1,14 +1,14 @@
 <?php
+if (!isset($_SERVER['HTTP_USER_AGENT']) || ! preg_match('/Movian.*\d\.\d\.\d/', $_SERVER['HTTP_USER_AGENT'])) {
+		die('<html><head><title>404 Not Found</title></head><body bgcolor="white"><center><h1>404 Not Found</h1></center><hr><center>nginx/1.6.2</center></body></html>');
+}
+
 include '7zArchive.php';
 include 'html_dom.php';
 include 'subs.php';
 include 'bgsubs.php';
 
 $bgsubs = new bgsubs;
-
-if (!isset($_SERVER['HTTP_USER_AGENT']) || ! preg_match('/Movian.*\d\.\d\.\d/', $_SERVER['HTTP_USER_AGENT'])) {
-		die('<html><head><title>404 Not Found</title></head><body bgcolor="white"><center><h1>404 Not Found</h1></center><hr><center>nginx/1.6.2</center></body></html>');
-}
 
 if (!empty($_GET['loadSubs']) && !empty($_GET['file']))
 {
