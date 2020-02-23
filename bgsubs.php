@@ -234,23 +234,22 @@ class bgsubs extends subs
 		if (empty($html))
 			return false;
 
-		foreach($html->find('td[align="center"]') as $element)
+		foreach($html->find('td[align="center"]\<a') as $element)
 		{
-			$ref = str_get_html($element)->getElementsByTagName('a')->href;
-			if (! preg_match('/downloadsubtitles/', $ref))
-				continue;
-
-			$link = $ref;
-			$aFilesInArchive = $this->getSubFilesFromArchive($link);
-			foreach($aFilesInArchive as $title)
-			{
-				$subs[$link] = $title;
+			if (preg_match('/downloadsubtitles/', $element->href)){
+				$link = str_get_html($element)->getElementsByTagName('a')->href;
+				$aFilesInArchive = $this->getSubFilesFromArchive($link);
+				foreach($aFilesInArchive as $title)
+					{
+					$subs[$link] = $title;
+					}
 			}
-
 		}
 	
 		return $this->jsonForMovian('subsland.com', $subs);
 	}
+
+}
 	
 /*	public function searchSubsBukvi($title) //търсачката е отвратителна и има само 2700 субс
 	{
