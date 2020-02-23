@@ -13,7 +13,6 @@ class subs
 
 	public function searchSubs($title)
 	{
-		//return $this->searchSubsUnacs($title);
 		return false;
 	}
 
@@ -46,8 +45,7 @@ class subs
 		$title = preg_replace('/\s+(?=\s)/', '$1', $title);
 		$title = trim($title);
 		if (empty($title))
-			die;		
-//		echo ($title);
+			die;
 		return $title;
 	}
 
@@ -197,7 +195,7 @@ class subs
 					$fp = fopen('/mnt/tmp/subs/' . $filename, 'r');
 					$subs = fread($fp, 1024*1024);
 					fclose($fp);
-					$this->subs = iconv('cp1251', 'utf-8', $subs);
+					$this->subs = mb_convert_encoding($subs, 'utf-8', 'auto');
 					unlink ('/mnt/tmp/subs/' . $filename);
 			}
 		}
@@ -226,7 +224,7 @@ class subs
 					$fp = $rar->getStream();
 					$subs = fread($fp, 1024*1024);
 					fclose($fp);
-					$this->subs = iconv('cp1251', 'utf-8', $subs);
+					$this->subs = mb_convert_encoding($subs, 'utf-8', 'auto');
 					return true;
 				}
 			}
@@ -250,7 +248,7 @@ class subs
 					$aSubFiles[] = $filename;
 					if (!empty($sub_filename) && strstr($filename, $sub_filename))
 					{
-						$this->subs = iconv('cp1251', 'utf-8', $zip->getFromName($filename));
+						$this->subs = mb_convert_encoding($zip->getFromName($filename), 'utf-8', 'auto');
 						return true;
 					}
 				}
