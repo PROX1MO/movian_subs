@@ -43,6 +43,10 @@ else
 
 	$bgsubs->setProvider($provider);
 
+	$title = urldecode($title);
+	$title = str_replace(
+		array('.', ':', '-', '_', '(', ')'), ' ',
+		$title);
 	if (preg_match('/(.*)\[.*\](.*)/', $title, $matches))
 	{
 		$title = $matches[1].$matches[2];
@@ -50,7 +54,7 @@ else
 	//is series?
 	//echo $title;
 	//Beecham House 01x06
-	if (preg_match('/(.*).? .??(\d+).?(\d+)/', $title, $matches))
+	if (preg_match('/(.*).? s+(\d+).?(\d+)/', $title, $matches))
 //	if (preg_match('/(.*).?S(\d+)E(\d+)/', $title, $matches))
 	{
 		$title = $matches[1];
