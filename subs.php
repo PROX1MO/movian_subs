@@ -31,7 +31,7 @@ class subs
 		}
 		$title = preg_replace('/(?!^)[12]\d{3}/', '$1', $title);
 		$title = preg_replace('/^episode\s+\d+\s+(.*)$/i', '$1', $title);
-		$title = preg_replace('/((\d+)[ex](\d+))(.*)$/i', '$1', $title);
+		$title = preg_replace('/(s?(\d+)[ex](\d+))(.*)$/i', '$1', $title);
 		$title = preg_replace('/\s+ii\s+/i', ' 2 ', $title);
 		$title = preg_replace('/\s+iii\s+/i', ' 3 ', $title);
 		$title = preg_replace('/\s+iv\s+/i', ' 4 ', $title);
