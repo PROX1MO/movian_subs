@@ -192,10 +192,18 @@ class subs
 			{
 				$aSubFiles[] = substr_replace($filename, '', -4);//remove file extensions, last 4 chars
 				$file = $archive->extractTo('/mnt/tmp/subs', $filename);
-					$fp = fopen('/mnt/tmp/subs/' . $filename, 'r');
+				$fp = fopen('/mnt/tmp/subs/' . $filename, 'r');
 					$subs = fread($fp, 1024*1024);
 					fclose($fp);
-					$this->subs = mb_convert_encoding($subs, 'utf-8', 'auto');
+					$enc = mb_detect_encoding($subs, mb_list_encodings());
+					if ($enc == 'ISO-8859-1')
+					{
+						$this->subs = iconv('cp1251', 'utf-8', $subs);
+					}
+					else
+					{
+						$this->subs = iconv($enc, 'utf-8', $subs);
+					}
 					unlink ('/mnt/tmp/subs/' . $filename);
 			}
 		}
@@ -224,7 +232,15 @@ class subs
 					$fp = $rar->getStream();
 					$subs = fread($fp, 1024*1024);
 					fclose($fp);
-					$this->subs = mb_convert_encoding($subs, 'utf-8', 'auto');
+					$enc = mb_detect_encoding($subs, mb_list_encodings());
+					if ($enc == 'ISO-8859-1')
+					{
+						$this->subs = iconv('cp1251', 'utf-8', $subs);
+					}
+					else
+					{
+						$this->subs = iconv($enc, 'utf-8', $subs);
+					}
 					return true;
 				}
 			}
@@ -248,7 +264,15 @@ class subs
 					$aSubFiles[] = $filename;
 					if (!empty($sub_filename) && strstr($filename, $sub_filename))
 					{
-						$this->subs = mb_convert_encoding($zip->getFromName($filename), 'utf-8', 'auto');
+						$enc = mb_detect_encoding($zip->getFromName($filename), mb_list_encodings());
+						if ($enc == 'ISO-8859-1')
+						{
+							$this->subs = iconv('cp1251', 'utf-8', $zip->getFromName($filename));
+						}
+						else
+						{
+							$this->subs = iconv($enc, 'utf-8', $zip->getFromName($filename));
+						}
 						return true;
 					}
 				}
