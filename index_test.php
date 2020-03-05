@@ -54,7 +54,7 @@ else
 	//is series?
 	//echo $title;
 	//Beecham House 01x06
-	if (preg_match('/(.*).? s+(\d+).?(\d+)/', $title, $matches))
+	if (preg_match('/(.*)\ss?(\d+)[ex](\d+)/i', $title, $matches))
 //	if (preg_match('/(.*).?S(\d+)E(\d+)/', $title, $matches))
 	{
 		$title = $matches[1];
