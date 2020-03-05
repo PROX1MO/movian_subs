@@ -37,7 +37,7 @@ else
 	$title = str_replace(
 		array('.', ':', '-', '_', '(', ')'), ' ',
 		$title);
-	if (preg_match('/(.*) s?(\d+)[ex](\d+)/i', $title, $matches))
+	if (preg_match('/(.*)\ss?(\d+)[ex](\d+)/i', $title, $matches))
 	{
 		$title = $matches[1];
 		$season = $matches[2];
