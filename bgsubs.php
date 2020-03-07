@@ -236,14 +236,15 @@ class bgsubs extends subs
 
 		foreach($html->find('td[align="center"]\<a') as $element)
 		{
-			if (preg_match('/downloadsubtitles/', $element->href))
+			$ref = str_get_html($element)->getElementsByTagName('a')->href;
+			if (! preg_match('/\/downloadsubtitles\//', $element->href))
+				continue;
+
+			$link = $ref;
+			$aFilesInArchive = $this->getSubFilesFromArchive($link);
+			foreach($aFilesInArchive as $title)
 			{
-				$link = str_get_html($element)->getElementsByTagName('a')->href;
-				$aFilesInArchive = $this->getSubFilesFromArchive($link);
-				foreach($aFilesInArchive as $title)
-				{
-					$subs[$link] = $title;
-				}
+				$subs[$link . "&" . mt_rand()] = $title;
 			}
 		}
 	
