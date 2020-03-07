@@ -61,10 +61,8 @@ class bgsubs extends subs
 				$aFilesInArchive = $this->getSubFilesFromArchive($link);
 				foreach($aFilesInArchive as $title)
 				{
-					$subs[$link] = $title;
+					$subs[$link . "&" . mt_rand()] = $title;
 				}
-
-				//$subs[$link] = $title;
 			}
 		}
 
@@ -93,10 +91,8 @@ class bgsubs extends subs
 			$aFilesInArchive = $this->getSubFilesFromArchive($link);
 			foreach($aFilesInArchive as $title)
 			{
-				$subs[$link] = $title;
+				$subs[$link . "&" . mt_rand()] = $title;
 			}
-			//$title = $element->plaintext;
-			//$subs[$link] = $title;
 		}
 
 		return $this->jsonForMovian('subsunacs.net', $subs);
@@ -155,7 +151,7 @@ class bgsubs extends subs
 					{
 						case 'Bulgarian':
 						case 'bulgarian':
-							$subs[$link] = $title;
+							$subs[$link . "&" . mt_rand()] = $title;
 							break;
 					}
 				}
@@ -191,7 +187,7 @@ class bgsubs extends subs
 			$aFilesInArchive = $this->getSubFilesFromArchive($link, $postData);
 			foreach($aFilesInArchive as $title)
 			{
-				$subs[$link] = $title;
+				$subs[$link . "&" . mt_rand()] = $title;
 			}
 
 		}
@@ -216,7 +212,7 @@ class bgsubs extends subs
 			$aFilesInArchive = $this->getSubFilesFromArchive($link);
 			foreach($aFilesInArchive as $title)
 			{
-				$subs[$link] = $title;
+				$subs[$link . "&" . mt_rand()] = $title;
 			}
 
 		}
@@ -234,13 +230,11 @@ class bgsubs extends subs
 		if (empty($html))
 			return false;
 
-		foreach($html->find('td[align="center"]\<a') as $element)
+		foreach($html->find('td[align="center"] a') as $element)
 		{
-			$ref = str_get_html($element)->getElementsByTagName('a')->href;
+			$link = str_get_html($element)->getElementsByTagName('a')->href;
 			if (! preg_match('/\/downloadsubtitles\//', $element->href))
 				continue;
-
-			$link = $ref;
 			$aFilesInArchive = $this->getSubFilesFromArchive($link);
 			foreach($aFilesInArchive as $title)
 			{
@@ -273,7 +267,7 @@ class bgsubs extends subs
 			$aFilesInArchive = $this->getSubFilesFromArchive($link);
 			foreach($aFilesInArchive as $title)
 			{
-				$subs[$link] = $title;
+				$subs[$link . "&" . mt_rand()] = $title;
 			}
 
 		}
