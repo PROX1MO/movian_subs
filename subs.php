@@ -24,25 +24,28 @@ class subs
 			$title);
 		$title = preg_replace('/\%u([0-9A-F]{4})/', '&#x\\1;', $title);
 		$title = html_entity_decode($title, ENT_NOQUOTES, 'utf-8');
-		$remove_suffixes = array(' \d{3,4}[pi]', ' SD', 'TrueHD', '[FU]HD', ' HU?D', ' [xh]26[45]', ' [24]k', ' NF ', 'AMZN', ' DC ', 'DVD', 'DivX', 'XviD', 'Pk ', ' TS ', 'WEB ', 'BluRay', 'BDRip', 'BRRip', 'DVBRip', 'TVRip', 'VHSRip', 'iNTERNAL', 'PROPER', 'PEPACK', 'AC3', 'AAC', 'DTS', 'Atmos', 'HEVC', 'SCREENER', 'SCR ', ' PAL ', 'SECAM', 'NTSC', '\[', '');
+		$remove_suffixes = array(' \d{3,4}[pi]', ' SD', 'TrueHD', '[FU]HD', ' HU?D', ' [xh]26[45]', ' [24]k', ' NF ', 'AMZN', ' DC ', 'DVD', 'DivX', 'XviD', 'Pk ', ' TS ', ' TC', 'WEB ', 'BluRay', 'BDRip', 'BRRip', 'DVBRip', 'TVRip', 'VHSRip', 'iNTERNAL', 'PROPER', 'PEPACK', 'AC3', 'AAC', 'DTS', 'Atmos', 'HEVC', 'SCREENER', 'SCR ', ' PAL ', 'SECAM', 'NTSC', '\[', '');
 		foreach($remove_suffixes as $rs)
 		{
 			$title = preg_replace("/(.*)$rs.*/i", '$1', $title);
 		}
 		$title = preg_replace('/(?!^)[12]\d{3}/', '$1', $title);
-		$title = preg_replace('/^episode\s+\d+\s+(.*)$/i', '$1', $title);
+//		$title = preg_replace('/^episode\s+\d+\s+(.*)$/i', '$1', $title);
 		$title = preg_replace('/(s?(\d+)[ex](\d+))(.*)$/i', '$1', $title);
-		$title = preg_replace('/\s+ii\s+/i', ' 2 ', $title);
-		$title = preg_replace('/\s+iii\s+/i', ' 3 ', $title);
-		$title = preg_replace('/\s+iv\s+/i', ' 4 ', $title);
-		$title = preg_replace('/\s+vi\s+/i', ' 6 ', $title);
-		$title = preg_replace('/\s+vii\s+/i', ' 7 ', $title);
-		$title = preg_replace('/\s+viii\s+/i', ' 8 ', $title);
-		$title = preg_replace('/\s+ix\s+/i', ' 9 ', $title);
-		$title = preg_replace('/\s+x\s+/i', ' 10 ', $title);
-		$title = preg_replace('/(Narcos)\s+?(Mexico)/i', '$1', $title);
-
-		$title = preg_replace('/\s+(?=\s)/', '$1', $title);
+		$title = preg_replace('/^download$/i', '', $title);
+		$title = preg_replace('/magicians us/i', 'magicians', $title);
+		$title = preg_replace('/Danish$/i', '', $title);
+		$title = preg_replace('/\s+ii$/i', ' 2 ', $title);
+		$title = preg_replace('/\s+iii$/i', ' 3 ', $title);
+		$title = preg_replace('/\s+iv$/i', ' 4 ', $title);
+		$title = preg_replace('/\s+vi$/i', ' 6 ', $title);
+		$title = preg_replace('/\s+vii$/i', ' 7 ', $title);
+		$title = preg_replace('/\s+viii$/i', ' 8 ', $title);
+		$title = preg_replace('/\s+ix$/i', ' 9 ', $title);
+		$title = preg_replace('/(Narcos)\s?(Mexico)/i', '$1', $title);
+		$title = preg_replace('/Mis곡bles/i', 'Miserables', $title);
+		$title = preg_replace('/기생충/i', 'Parasite', $title);
+		$title = preg_replace('/葉問/i', 'Ip man', $title);
 		$title = trim($title);
 		if (empty($title))
 			die;
@@ -57,6 +60,7 @@ class subs
 		foreach($aSubs as $downloadUrl => $title)
 		{
 			$title = urlencode($title);
+			$title = preg_replace("/(.*)%2B.*/", "$1", $title);
 			$downloadUrl = urlencode($downloadUrl);
 			$allSubs[] = array(
 				"path" => "http://path_to_api/?loadSubs=$downloadUrl&file=$title",
@@ -204,7 +208,7 @@ class subs
 					{
 						$this->subs = iconv($enc, 'utf-8', $subs);
 					}
-					unlink ('/mnt/tmp/subs/' . $filename);
+				unlink ('/mnt/tmp/subs/' . $filename);
 			}
 		}
 
