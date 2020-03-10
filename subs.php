@@ -42,7 +42,6 @@ class subs
 		$title = preg_replace('/\s+vii$/i', ' 7', $title);
 		$title = preg_replace('/\s+viii$/i', ' 8', $title);
 		$title = preg_replace('/\s+ix$/i', ' 9', $title);
-		$title = preg_replace('/(Narcos)\s?(Mexico)/i', '$1', $title);
 		$title = preg_replace('/Mis곡bles/i', 'Miserables', $title);
 		$title = preg_replace('/기생충/i', 'Parasite', $title);
 		$title = preg_replace('/葉問/i', 'Ip man', $title);
