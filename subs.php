@@ -31,7 +31,7 @@ class subs
 		}
 		$title = preg_replace('/(?!^)[12]\d{3}/', '$1', $title);
 		$title = preg_replace('/^episode\s+\d+\s+(.*)$/i', '$1', $title);
-		$title = preg_replace('/s?\d+[ex]\d+\s?(.*)$/i', '$1', $title);
+		$title = preg_replace('/^s?\d+[ex]\d+\s?(.*)$/i', '$1', $title);
 		$title = preg_replace('/^download$/i', '', $title);
 		$title = preg_replace('/magicians us/i', 'magicians', $title);
 		$title = preg_replace('/Danish$/i', '', $title);
