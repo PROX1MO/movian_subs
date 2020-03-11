@@ -59,8 +59,9 @@ class subs
 		foreach($aSubs as $downloadUrl => $title)
 		{
 			$title = urlencode($title);
-			$title = preg_replace("/(.*)%2B.*/", "$1", $title);
+			$title = preg_replace('/(.*)%2B.*/', '$1', $title);
 			$downloadUrl = urlencode($downloadUrl);
+			$downloadUrl = preg_replace('/(.*)\%26\d+$/', '$1', $downloadUrl);
 			$allSubs[] = array(
 				"path" => "http://path_to_api/?loadSubs=$downloadUrl&file=$title",
 				"file" => $title,
