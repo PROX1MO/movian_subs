@@ -24,17 +24,16 @@ class subs
 			$title);
 		$title = preg_replace('/\%u([0-9A-F]{4})/', '&#x\\1;', $title);
 		$title = html_entity_decode($title, ENT_NOQUOTES, 'utf-8');
-		$remove_suffixes = array(' \d{3,4}[pi]', ' SD', 'TrueHD', '[FU]HD', ' HU?D', ' [xh]26[45]', ' [24]k', ' NF ', 'AMZN', ' DC ', 'DVD', 'DivX', 'XviD', 'Pk ', ' TS ', ' TC', 'WEB ', 'BluRay', 'BDRip', 'BRRip', 'DVBRip', 'TVRip', 'VHSRip', 'iNTERNAL', 'PROPER', 'PEPACK', 'AC3', 'AAC', 'DTS', 'Atmos', 'HEVC', 'SCREENER', 'SCR ', ' PAL ', 'SECAM', 'NTSC', '\[', '');
+		$remove_suffixes = array(' \d{3,4}[pi]', ' SD', 'TrueHD', '[FU]HD', ' HU?D', ' [xh]26[45]', ' [24]k', ' HC', ' NF', 'AMZN', ' BD', ' DC', 'DVB', 'DVD', 'DivX', 'XviD', ' Pk', ' TS', ' TC', ' WEB', 'BluRay', 'BDRip', 'BRRip', 'DVBRip', ' Rip ', 'SATRip', 'TVRip', 'VHSRip', 'iNTERNAL', 'PROPER', 'PEPACK', 'AC3', 'AAC', 'DTS', 'Atmos', 'HEVC', ' SCR', ' PAL', 'SECAM', 'NTSC', '\[');
 		foreach($remove_suffixes as $rs)
 		{
 			$title = preg_replace("/(.*)$rs.*/i", '$1', $title);
 		}
+
 		$title = preg_replace('/(?!^)[12]\d{3}/', '$1', $title);
-		$title = preg_replace('/^episode\s+\d+\s+(.*)$/i', '$1', $title);
+		$title = preg_replace('/(.*\ss?\d+[ex]\d+).*/i', '$1', $title);
 		$title = preg_replace('/^s?\d+[ex]\d+\s?(.*)$/i', '$1', $title);
-		$title = preg_replace('/^download$/i', '', $title);
-		$title = preg_replace('/magicians us/i', 'magicians', $title);
-		$title = preg_replace('/Danish$/i', '', $title);
+		$title = preg_replace('/^episode\s+\d+\s+(.*)$/i', '$1', $title);
 		$title = preg_replace('/\s+ii$/i', ' 2', $title);
 		$title = preg_replace('/\s+iii$/i', ' 3', $title);
 		$title = preg_replace('/\s+iv$/i', ' 4', $title);
@@ -42,9 +41,19 @@ class subs
 		$title = preg_replace('/\s+vii$/i', ' 7', $title);
 		$title = preg_replace('/\s+viii$/i', ' 8', $title);
 		$title = preg_replace('/\s+ix$/i', ' 9', $title);
-		$title = preg_replace('/Mis곡bles/i', 'Miserables', $title);
+
+		$title = preg_replace('/magicians us/i', 'magicians', $title);
 		$title = preg_replace('/기생충/i', 'Parasite', $title);
 		$title = preg_replace('/葉問/i', 'Ip man', $title);
+		$title = preg_replace('/감기/i', 'Cold', $title);
+		$title = preg_replace('/غار/i', 'Cave', $title);
+
+		$title = preg_replace('/^\s?download\s?$/i', '', $title);
+		$title = preg_replace('/New\s?$/i', '', $title);
+		$title = preg_replace('/Danish\s?$/i', '', $title);
+		$title = preg_replace('/sir david attenborough/i', '', $title);
+		
+		$title = preg_replace('/\s+(?=\s)/', '$1', $title);
 		$title = trim($title);
 		if (empty($title))
 			die;
@@ -110,7 +119,7 @@ class subs
 
 		$cache_file = $this->cache_dir . "/" . md5($url.$referer.$content);
 		//is cached
-		if (false && file_exists($cache_file) && filesize($cache_file) > 10)
+		if (file_exists($cache_file) && filesize($cache_file) > 10)
 		{
 			$result = file_get_contents($cache_file);
 		}
