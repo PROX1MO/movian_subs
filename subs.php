@@ -34,6 +34,7 @@ class subs
 		$title = preg_replace('/(.*\ss?\d+[ex]\d+).*/i', '$1', $title);
 		$title = preg_replace('/^s?\d+[ex]\d+\s?(.*)$/i', '$1', $title);
 		$title = preg_replace('/^episode\s+\d+\s+(.*)$/i', '$1', $title);
+
 		$title = preg_replace('/\s+ii$/i', ' 2', $title);
 		$title = preg_replace('/\s+iii$/i', ' 3', $title);
 		$title = preg_replace('/\s+iv$/i', ' 4', $title);
@@ -41,7 +42,6 @@ class subs
 		$title = preg_replace('/\s+vii$/i', ' 7', $title);
 		$title = preg_replace('/\s+viii$/i', ' 8', $title);
 		$title = preg_replace('/\s+ix$/i', ' 9', $title);
-
 		$title = preg_replace('/magicians us/i', 'magicians', $title);
 		$title = preg_replace('/기생충/i', 'Parasite', $title);
 		$title = preg_replace('/葉問/i', 'Ip man', $title);
@@ -154,6 +154,7 @@ class subs
 			case '7z':
 				return '7z';
 				break;
+
 			default:
 				return 'unknown';
 		}
