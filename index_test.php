@@ -1,5 +1,5 @@
 <?php
-include '7zArchive.php';
+include '7z.php';
 include 'html_dom.php';
 include 'subs.php';
 include 'bgsubs.php';
