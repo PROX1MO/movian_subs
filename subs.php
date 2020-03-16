@@ -57,6 +57,7 @@ class subs
 		$title = trim($title);
 		if (empty($title))
 			die;
+
 		return $title;
 	}
 
@@ -64,7 +65,6 @@ class subs
 	{
 		$aSubs = array_unique($aSubs);
 		$allSubs = array();
-
 		foreach($aSubs as $downloadUrl => $title)
 		{
 			$title = urlencode($title);
@@ -74,7 +74,7 @@ class subs
 			$allSubs[] = array(
 				"path" => "http://path_to_api/?loadSubs=$downloadUrl&file=$title",
 				"file" => $title,
-				"type" => 'srt',
+				"type" => "srt",
 				"site" => $site,
 			);
 		}
@@ -203,7 +203,7 @@ class subs
 		foreach ($archive->entries() as $entry)
 		{
 			$filename = $entry['Name'];
-			if ((strstr($filename, '.srt') || strstr($filename, '.sub')) && $entry['Size'] < 200*1024)
+			if ((strstr($filename, '.srt') || strstr($filename, '.sub')) && $entry['Size'] < 256*1024)
 			{
 				$aSubFiles[] = substr_replace($filename, '', -4);//remove file extensions, last 4 chars
 				$file = $archive->extractTo('/mnt/tmp/tmp7z', $filename);
@@ -239,7 +239,7 @@ class subs
 		foreach($list as $rar)
 		{
 			$filename = $rar->getName();
-			if ((strstr($filename, '.srt') || strstr($filename, '.sub')) && $rar->getUnpackedSize() < 200*1024)
+			if ((strstr($filename, '.srt') || strstr($filename, '.sub')) && $rar->getUnpackedSize() < 256*1024)
 			{
 				$aSubFiles[] = substr_replace($filename, '', -4);//remove file extensions, last 4 chars
 				if (!empty($sub_filename) && strstr($filename, $sub_filename))
@@ -273,8 +273,7 @@ class subs
 			{
 				$stat = $zip->statIndex($i);
 				$filename = $stat['name'];
-
-				if ((strstr($filename, '.srt') || strstr($filename, '.sub')) && $stat['size'] < 200*1024)
+				if ((strstr($filename, '.srt') || strstr($filename, '.sub')) && $stat['size'] < 256*1024)
 				{
 					$aSubFiles[] = $filename;
 					if (!empty($sub_filename) && strstr($filename, $sub_filename))
@@ -303,6 +302,7 @@ class subs
 		$this->subsExtractor($url, $filename, $referer);
 		return $this->subs;
 	}
+
 }
 
 ?>
