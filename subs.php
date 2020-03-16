@@ -117,11 +117,11 @@ class subs
 			curl_setopt($ch,CURLOPT_POSTFIELDS, $data);
 		}
 
-		$cache_file = $this->cache_dir . '/' . md5($url.$referer.$content);
+		$this->tmpfile = $this->cache_dir . '/' . md5($url.$referer.$content);
 		//is cached
-		if (file_exists($cache_file) && filesize($cache_file) > 10)
+		if (file_exists($this->tmpfile) && filesize($this->tmpfile) > 10)
 		{
-			$result = file_get_contents($cache_file);
+			$result = file_get_contents($this->tmpfile);
 		}
 		// not cached yet
 		else
@@ -130,7 +130,7 @@ class subs
 			if (!$result)
 				return false;
 
-			file_put_contents($cache_file, $result);
+			file_put_contents($this->tmpfile, $result);
 		}
 
 		curl_close($ch);
@@ -168,8 +168,8 @@ class subs
 
 		$result = $this->httpRequest($url, $referer, $data);
 
-		$this->tmpfile = tempnam('/mnt/tmp/subs', 'phpsub-');
-		file_put_contents($this->tmpfile, $result);
+//		$this->tmpfile = tempnam('/mnt/tmp/tmp7z', 'phpsub-');
+//		file_put_contents($this->tmpfile, $result);
 
 		switch($this->archiveType($result))
 		{
@@ -206,8 +206,8 @@ class subs
 			if ((strstr($filename, '.srt') || strstr($filename, '.sub')) && $entry['Size'] < 200*1024)
 			{
 				$aSubFiles[] = substr_replace($filename, '', -4);//remove file extensions, last 4 chars
-				$file = $archive->extractTo('/mnt/tmp/subs', $filename);
-				$fp = fopen('/mnt/tmp/subs/' . $filename, 'r');
+				$file = $archive->extractTo('/mnt/tmp/tmp7z', $filename);
+				$fp = fopen('/mnt/tmp/tmp7z/' . $filename, 'r');
 					$subs = fread($fp, 1024*1024);
 					fclose($fp);
 					$enc = mb_detect_encoding($subs, mb_list_encodings());
@@ -219,7 +219,7 @@ class subs
 					{
 						$this->subs = iconv($enc, 'utf-8', $subs);
 					}
-				unlink ('/mnt/tmp/subs/' . $filename);
+				unlink ('/mnt/tmp/tmp7z/' . $filename);
 			}
 		}
 
