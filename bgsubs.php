@@ -61,7 +61,7 @@ class bgsubs extends subs
 				$aFilesInArchive = $this->getSubFilesFromArchive($link);
 				foreach($aFilesInArchive as $title)
 				{
-					$subs[$link . "&" . mt_rand()] = $title;
+					$subs[$link . '&' . mt_rand()] = $title;
 				}
 			}
 		}
@@ -91,7 +91,7 @@ class bgsubs extends subs
 			$aFilesInArchive = $this->getSubFilesFromArchive($link);
 			foreach($aFilesInArchive as $title)
 			{
-				$subs[$link . "&" . mt_rand()] = $title;
+				$subs[$link . '&' . mt_rand()] = $title;
 			}
 		}
 
@@ -120,43 +120,42 @@ class bgsubs extends subs
 				continue;
 		}
 
-			$title_prefix = @$html->find('span[class=titulo]', 0)->plaintext;
+			$title_prefix = @$html->find('span[class="titulo"]', 0)->plaintext;
 			$title_prefix = str_replace('- Switch Subtitle', '', $title);
-			foreach($html->find('table[class=tabel95]') as $element)
+			foreach($html->find('table[class="tabel95"]') as $element)
 			{
-				//get title
-				$title_version = @$element->find("td[class=NewsTitle]", 0)->plaintext;
+				$title_version = @$element->find('td[class="NewsTitle"]', 0)->plaintext;
 				$title_version = preg_replace('/Version (.*),.*/', '${1}', $title_version);
 				if (empty($title_version))
 					continue;
 
 				$title = "${title_prefix}-${title_version}";
-				$trs = $element->find("tr");
+				$trs = $element->find('tr');
 				foreach($trs as $tr)
 				{
-					$lang = @$tr->find("td[class=language]" ,0)->plaintext;
+					$lang = @$tr->find('td[class="language"]' ,0)->plaintext;
 					$link = "https://www.addic7ed.com";
-					$downloadButton = @$tr->find("a[class=buttonDownload]", 0);
-					$completed = @$tr->find("td[width=\"19%\"]", 0)->plaintext;
+					$downloadButton = @$tr->find('a[class="buttonDownload"]', 0);
+					$completed = @$tr->find('td[width="19%"]', 0)->plaintext;
 					if(! $downloadButton)
 						continue;
 
 					$link .= $downloadButton->href;
-					$completed = @$tr->find("td[width=\"19%\"]", 0)->plaintext;
+					$completed = @$tr->find('td[width="19%"]', 0)->plaintext;
 
 					if (strstr($completed, '%'))	
 						continue;
-					
+
 					switch($lang)
 					{
 						case 'Bulgarian':
 						case 'bulgarian':
-							$subs[$link . "&" . mt_rand()] = $title;
+							$subs[$link . '&' . mt_rand()] = $title;
 							break;
 					}
 				}
 			}
-//		print_r($subs);
+
 		return $this->jsonForMovian('addic7ed.com', $subs);
 	}
 
@@ -187,7 +186,7 @@ class bgsubs extends subs
 			$aFilesInArchive = $this->getSubFilesFromArchive($link, $postData);
 			foreach($aFilesInArchive as $title)
 			{
-				$subs[$link . "&" . mt_rand()] = $title;
+				$subs[$link . '&' . mt_rand()] = $title;
 			}
 
 		}
@@ -212,7 +211,7 @@ class bgsubs extends subs
 			$aFilesInArchive = $this->getSubFilesFromArchive($link);
 			foreach($aFilesInArchive as $title)
 			{
-				$subs[$link . "&" . mt_rand()] = $title;
+				$subs[$link . '&' . mt_rand()] = $title;
 			}
 
 		}
@@ -238,7 +237,7 @@ class bgsubs extends subs
 			$aFilesInArchive = $this->getSubFilesFromArchive($link);
 			foreach($aFilesInArchive as $title)
 			{
-				$subs[$link . "&" . mt_rand()] = $title;
+				$subs[$link . '&' . mt_rand()] = $title;
 			}
 		}
 	
@@ -267,7 +266,7 @@ class bgsubs extends subs
 			$aFilesInArchive = $this->getSubFilesFromArchive($link);
 			foreach($aFilesInArchive as $title)
 			{
-				$subs[$link . "&" . mt_rand()] = $title;
+				$subs[$link . '&' . mt_rand()] = $title;
 			}
 
 		}
