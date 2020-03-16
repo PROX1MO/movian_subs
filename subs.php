@@ -117,7 +117,7 @@ class subs
 			curl_setopt($ch,CURLOPT_POSTFIELDS, $data);
 		}
 
-		$cache_file = $this->cache_dir . "/" . md5($url.$referer.$content);
+		$cache_file = $this->cache_dir . '/' . md5($url.$referer.$content);
 		//is cached
 		if (file_exists($cache_file) && filesize($cache_file) > 10)
 		{
@@ -143,7 +143,7 @@ class subs
 		//zip, rar or 7z?
 		switch($firstBytes)
 		{
-			case "PK":
+			case 'PK':
 				return 'zip';
 				break;
 
