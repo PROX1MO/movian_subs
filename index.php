@@ -3,7 +3,7 @@ if (!isset($_SERVER['HTTP_USER_AGENT']) || ! preg_match('/Movian.*\d\.\d\.\d/', 
 		die('<html><head><title>404 Not Found</title></head><body bgcolor="white"><center><h1>404 Not Found</h1></center><hr><center>nginx/1.6.2</center></body></html>');
 }
 
-include '7zArchive.php';
+include '7z.php';
 include 'html_dom.php';
 include 'subs.php';
 include 'bgsubs.php';
