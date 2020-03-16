@@ -146,7 +146,7 @@ class subs
 			case "PK":
 				return 'zip';
 				break;
-		
+
 			case 'Ra':
 				return 'rar';
 				break;
@@ -184,6 +184,7 @@ class subs
 			case '7z':
 				$subs = $this->SevenZipArchive($filename);
 				break;
+
 			default:
 				$subs = true;
 				$this->subs = $result;
