@@ -167,10 +167,6 @@ class subs
 			$referer = $url;
 
 		$result = $this->httpRequest($url, $referer, $data);
-
-//		$this->tmpfile = tempnam('/mnt/tmp/tmp7z', 'phpsub-');
-//		file_put_contents($this->tmpfile, $result);
-
 		switch($this->archiveType($result))
 		{
 			case 'zip':
@@ -190,7 +186,6 @@ class subs
 				$this->subs = $result;
 		}
 
-		// extract subtitles
 		unlink($this->tmpfile);
 		return $subs;
 	}
@@ -206,7 +201,7 @@ class subs
 			if ((strstr($filename, '.srt') || strstr($filename, '.sub')) && $entry['Size'] < 256*1024)
 			{
 				$aSubFiles[] = substr_replace($filename, '', -4);//remove file extensions, last 4 chars
-				$file = $archive->extractTo('/mnt/tmp/tmp7z', $filename);
+				$file = $archive->extractTo('/mnt/tmp/tmp7z/', $filename);
 				$fp = fopen('/mnt/tmp/tmp7z/' . $filename, 'r');
 					$subs = fread($fp, 1024*1024);
 					fclose($fp);
