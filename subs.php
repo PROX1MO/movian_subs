@@ -1,7 +1,7 @@
 <?php
 class subs
 {
-	protected $cache_dir = '/mnt/tmp/cache';
+	protected $cache_dir = '/mnt/tmp/cache/';
 	protected $useragent = 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/70.0.3538.110 Safari/537.36';
 	protected $subs;
 	protected $provider;
@@ -117,7 +117,7 @@ class subs
 			curl_setopt($ch,CURLOPT_POSTFIELDS, $data);
 		}
 
-		$this->tmpfile = $this->cache_dir . '/' . md5($url.$referer.$content);
+		$this->tmpfile = $this->cache_dir . md5($url.$referer.$content);
 		//is cached
 		if (file_exists($this->tmpfile) && filesize($this->tmpfile) > 10)
 		{
